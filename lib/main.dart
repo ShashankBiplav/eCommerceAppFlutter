@@ -7,7 +7,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'eCommerce',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
       home: MyHomePage(),
     );
   }
@@ -20,7 +22,9 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('eCommerce'),
       ),
-      body: Center(child: Text('Our eCommerce shop'),),
+      body: Center(
+        child: Text('Our eCommerce shop'),
+      ),
     );
   }
 }
