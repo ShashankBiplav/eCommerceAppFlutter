@@ -13,13 +13,14 @@ class ProductsGrid extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       itemCount: products.length,
       //setting up a provider here so that we can listen inside ProductItem()  if a product isFAvourite or not.
-      itemBuilder: (ctx, i) => ChangeNotifierProvider(
-        create: (ctx)=>products[i],
-              child: ProductItem(
-          // imageUrl: products[i].imageUrl,
-          // id: products[i].id,
-          // title: products[i].title,
-        ),
+      itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+        value:products[i] ,
+        // create: (ctx) => products[i],
+        child: ProductItem(
+            // imageUrl: products[i].imageUrl,
+            // id: products[i].id,
+            // title: products[i].title,
+            ),
       ),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
