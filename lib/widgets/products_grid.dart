@@ -12,10 +12,14 @@ class ProductsGrid extends StatelessWidget {
     return GridView.builder(
       padding: const EdgeInsets.all(10),
       itemCount: products.length,
-      itemBuilder: (ctx, i) => ProductItem(
-        imageUrl: products[i].imageUrl,
-        id: products[i].id,
-        title: products[i].title,
+      //setting up a provider here so that we can listen inside ProductItem()  if a product isFAvourite or not.
+      itemBuilder: (ctx, i) => ChangeNotifierProvider(
+        create: (ctx)=>products[i],
+              child: ProductItem(
+          // imageUrl: products[i].imageUrl,
+          // id: products[i].id,
+          // title: products[i].title,
+        ),
       ),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,

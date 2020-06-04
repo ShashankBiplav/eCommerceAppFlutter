@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (ctx) =>
+      create: (ctx) => 
           ProductProvider(), // provider version >3 using create: instead of builder:
       child: MaterialApp(
         title: 'eCommerce',

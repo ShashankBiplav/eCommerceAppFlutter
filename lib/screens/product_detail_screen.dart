@@ -12,7 +12,7 @@ class ProductDetailScreen extends StatelessWidget {
     final loadedProduct = Provider.of<ProductProvider>(
       context,
       listen: false,
-    ).findById(productId);
+).findById(productId);
     return Scaffold(
       appBar: AppBar(
         // leading: IconButton(
@@ -22,7 +22,7 @@ class ProductDetailScreen extends StatelessWidget {
         title: Text(loadedProduct.title),
       ),
       body: Center(
-        child: Text(productId),
+        child: Text(loadedProduct.imageUrl),
       ),
     );
   }
