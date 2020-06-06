@@ -1,4 +1,3 @@
-import 'package:ecommerce/models/cart_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
@@ -49,6 +48,7 @@ class CartScreen extends StatelessWidget {
               itemCount: cart.itemCount,
               itemBuilder: (ctx, i) => ci.CartItem(
                 id: cart.items.values.toList()[i].id,  //used .values.toList() because we get a map from CartProvider
+                productId: cart.items.keys.toList()[i],
                 title: cart.items.values.toList()[i].title,  //used .values.toList() because we get a map from CartProvider
                 quantity: cart.items.values.toList()[i].quantity,  //used .values.toList() because we get a map from CartProvider
                 price: cart.items.values.toList()[i].price,  //used .values.toList() because we get a map from CartProvider

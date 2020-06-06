@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             primarySwatch: Colors.purple,
             accentColor: Colors.deepOrange,
+            // errorColor: Colors.red,
             fontFamily: 'Lato'),
         home: ProductsOverviewScreen(),
         routes: {
