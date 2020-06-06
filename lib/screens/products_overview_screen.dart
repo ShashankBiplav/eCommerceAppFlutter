@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../widgets/products_grid.dart';
+import '../widgets/badge.dart';
+import '../providers/cart_provider.dart';
+import './cart_screen.dart';
 
-enum FilterOptions{
+enum FilterOptions {
   FAVOURITES,
   ALL,
 }
@@ -20,15 +24,14 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         title: Text('My Shop'),
         actions: <Widget>[
           PopupMenuButton(
-            onSelected: (FilterOptions selectedValue){
-             setState(() {
-                if(selectedValue == FilterOptions.FAVOURITES){
-                _showonlyFavourites =true;
-              }
-              else{
-                _showonlyFavourites =false;
-              }
-             });
+            onSelected: (FilterOptions selectedValue) {
+              setState(() {
+                if (selectedValue == FilterOptions.FAVOURITES) {
+                  _showonlyFavourites = true;
+                } else {
+                  _showonlyFavourites = false;
+                }
+              });
             },
             icon: Icon(Icons.more_vert),
             itemBuilder: (_) => [
@@ -42,9 +45,21 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               ),
             ],
           ),
+          Consumer<CartProvider>(
+            builder: (_, cart, ch) => Badge(
+              child: ch,
+              value: cart.itemCount.toString(),
+            ),
+            child: IconButton(
+                  icon: Icon(Icons.shopping_cart),
+                  onPressed: (){
+                    Navigator.of(context).pushNamed(CartScreen.routeName);
+                  },
+                ),
+          ),
         ],
       ),
-      body: ProductsGrid(showFavourites:_showonlyFavourites),
+      body: ProductsGrid(showFavourites: _showonlyFavourites),
     );
   }
 }
