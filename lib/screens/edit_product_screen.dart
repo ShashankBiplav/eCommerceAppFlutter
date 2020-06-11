@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../models/product.dart';
-import '../providers/product_provider.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-products';
@@ -44,12 +43,25 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   void _updateImageUrl() {
     if (!_imageUrlFocusNode.hasFocus) {
+        if ((!_imageUrlController.text.startsWith('http') && !_imageUrlController.text.startsWith('https'))||
+        ( !_imageUrlController.text.endsWith('.png') &&
+          (!_imageUrlController.text.endsWith('.jpg') || !_imageUrlController.text.endsWith('.jpeg')))) {
+                              return ;
+                            }
       setState(() {});
     }
   }
 
   void _saveForm() {
+    final isValid = _form.currentState.validate();
+    if (!isValid) {
+      return;
+    }
     _form.currentState.save();
+    print(_editedProduct.title);
+    print(_editedProduct.description);
+    print(_editedProduct.id);
+    print(_editedProduct.imageUrl);
   }
 
   @override
@@ -94,6 +106,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           id: null,
                         );
                       },
+                      validator: (value){
+                        if (value.isEmpty) {
+                          return 'Title is required';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   Container(
@@ -112,9 +130,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         FocusScope.of(context).requestFocus(
                             _descriptionFocusNode); // to shift focus from this input filed to _priceFocusNode
                       },
-                      focusNode:
-                          _priceFocusNode, 
-                          onSaved: (value) {
+                      focusNode: _priceFocusNode,
+                      onSaved: (value) {
                         _editedProduct = Product(
                           title: _editedProduct.title,
                           price: double.parse(value),
@@ -122,7 +139,19 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           imageUrl: _editedProduct.imageUrl,
                           id: null,
                         );
-                      },// setting the focus node so that we can change focus here
+                      }, // setting the focus node so that we can change focus here
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter a price';
+                        }
+                        if (double.tryParse(value) == null) {
+                          return 'Please enter a valid number';
+                        }
+                        if (double.parse(value) <= 0) {
+                          return 'Please enter a number greater than 0';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   Container(
@@ -139,7 +168,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       keyboardType: TextInputType.multiline,
                       focusNode:
                           _descriptionFocusNode, // setting the focus node so that we can change focus here
-                          onSaved: (value) {
+                      onSaved: (value) {
                         _editedProduct = Product(
                           title: _editedProduct.title,
                           price: _editedProduct.price,
@@ -147,6 +176,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           imageUrl: _editedProduct.imageUrl,
                           id: null,
                         );
+                      },
+                      validator: (value){
+                        if (value.isEmpty) {
+                          return 'Description is required';
+                        }
+                        if (value.length < 10) {
+                          return 'Please describe some more';
+                        }
+                        return null;
                       },
                     ),
                   ),
@@ -182,14 +220,26 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             _saveForm();
                           },
                           onSaved: (value) {
-                        _editedProduct = Product(
-                          title: _editedProduct.title,
-                          price: _editedProduct.price,
-                          description: _editedProduct.description,
-                          imageUrl: value,
-                          id: null,
-                        );
-                      },
+                            _editedProduct = Product(
+                              title: _editedProduct.title,
+                              price: _editedProduct.price,
+                              description: _editedProduct.description,
+                              imageUrl: value,
+                              id: null,
+                            );
+                          },
+                          validator: (value){
+                            if (value.isEmpty) {
+                              return 'Please enter an image URL';
+                            }
+                            if (!value.startsWith('http') && !value.startsWith('https')) {
+                              return 'Please enter a valid image URL';
+                            }
+                            if (!value.endsWith('.png') && (!value.endsWith('.jpg') || !value.endsWith('.jpeg'))) {
+                              return 'The entered URL dosen\'t yield and image';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                     ],
