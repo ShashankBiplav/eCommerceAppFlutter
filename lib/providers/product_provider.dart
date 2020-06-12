@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/product.dart';
 
 class ProductProvider with ChangeNotifier {
-  List<Product> _items = [Product(
+  List<Product> _items = [
+    Product(
       //dummy products added for now
       id: 'p1',
       title: 'Red Shirt',
@@ -34,22 +35,46 @@ class ProductProvider with ChangeNotifier {
       price: 49.99,
       imageUrl:
           'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
-    ),];
+    ),
+  ];
 
   List<Product> get items {
     return [..._items];
   }
   // getter method to return only favourites
 
-  List<Product> get favouriteItems{
+  List<Product> get favouriteItems {
     return _items.where((prodItem) => prodItem.isFavourite).toList();
   }
 
-  void addProduct(){
-    // _items.add(value);
+  void addProduct(Product product) {
+    final newProduct = Product(
+      description: product.description,
+      title: product.title,
+      imageUrl: product.imageUrl,
+      price: product.price,
+      id: DateTime.now().toString(),
+    );
+    _items.add(newProduct);
+    // _items.insert(0, newProduct); // to add items at the begenning of the list
     notifyListeners();
   }
-  Product findById(String id){
+
+  Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
+  }
+  void updateProduct(String id, Product newProduct){
+    final productIndex =_items.indexWhere((product) => product.id == id);
+    if (productIndex >= 0) {
+      _items[productIndex] =newProduct;
+    notifyListeners();
+    }
+    else{
+      print('...');
+    }
+  }
+  void deleteProduct(String id){
+    _items.removeWhere((product) => product.id == id);
+    notifyListeners();
   }
 }
