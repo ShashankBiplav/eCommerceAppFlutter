@@ -175,7 +175,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         FocusScope.of(context).requestFocus(
                             _descriptionFocusNode); // to shift focus from this input filed to _priceFocusNode
                       },
-                      focusNode: _priceFocusNode,
+                      focusNode: _priceFocusNode, // setting the focus node so that we can change focus here
                       onSaved: (value) {
                         _editedProduct = Product(
                           title: _editedProduct.title,
@@ -185,7 +185,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           id: _editedProduct.id,
                           isFavourite: _editedProduct.isFavourite,
                         );
-                      }, // setting the focus node so that we can change focus here
+                      }, 
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter a price';
