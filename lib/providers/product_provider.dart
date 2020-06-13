@@ -51,34 +51,43 @@ class ProductProvider with ChangeNotifier {
     return _items.where((prodItem) => prodItem.isFavourite).toList();
   }
 
-  Future<void> addProduct(Product product) {
+  Future<void> addProduct(Product product) async {
     const url =
         'https://ecommerceappflutter-1feb8.firebaseio.com/products.json'; //firebase specific
-    return http
-        .post(url,
-            body: json.encode({
-              'title': product.title,
-              'description': product.description,
-              'imageUrl': product.imageUrl,
-              'price': product.price,
-              'isFavourite': product.isFavourite,
-            }))
-        .then((response) { // then returns a future
-          print(json.decode(response.body));
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode({
+          'title': product.title,
+          'description': product.description,
+          'imageUrl': product.imageUrl,
+          'price': product.price,
+          'isFavourite': product.isFavourite,
+        }),
+      );
+      print(json.decode(response.body));
       final newProduct = Product(
         description: product.description,
         title: product.title,
         imageUrl: product.imageUrl,
         price: product.price,
-        id: json.decode(response.body)['name'],// assingning the id that is given to the obejct by firebase
+        id: json.decode(response.body)[
+            'name'], // assingning the id that is given to the obejct by firebase
       );
       _items.add(newProduct);
       // _items.insert(0, newProduct); // to add items at the begenning of the list
       notifyListeners();
-    }).catchError((error){
+      // .then((response) {
+    } // then returns a future
+    catch (error) {
       print(error);
       throw error;
-    });
+    }
+
+    // }).catchError((error) {
+    // print(error);
+    // throw error;
+    // });
   }
 
   Product findById(String id) {

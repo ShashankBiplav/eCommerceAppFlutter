@@ -86,7 +86,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     final isValid = _form.currentState.validate();
     if (!isValid) {
       return;
@@ -103,28 +103,33 @@ class _EditProductScreenState extends State<EditProductScreen> {
       });
       Navigator.of(context).pop();
     } else {
-      Provider.of<ProductProvider>(context, listen: false)
-          .addProduct(_editedProduct)
-          .catchError((error) {
-       return showDialog<Null>(
+      try{
+        await Provider.of<ProductProvider>(context, listen: false)
+          .addProduct(_editedProduct);
+      }catch(error){
+        await showDialog<Null>(
           context: context,
           builder: (ctx) => AlertDialog(
             title: Text('An error occured'),
             content: Text('Unable to upload object to server'),
             actions: <Widget>[
-              FlatButton(onPressed: (){
-                Navigator.of(ctx).pop();
-              }, child: Text('OK'),),
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+                child: Text('OK'),
+              ),
             ],
           ),
         );
-      }).then((_) {
-        setState(() {
+      }
+      finally{
+         setState(() {
           _isLoading = false;
         });
         Navigator.of(context)
             .pop(); // page won't pop unless we return future from product_provider
-      });
+      }
     }
 
     // Navigator.of(context).pop();
