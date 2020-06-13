@@ -51,10 +51,10 @@ class ProductProvider with ChangeNotifier {
     return _items.where((prodItem) => prodItem.isFavourite).toList();
   }
 
-  void addProduct(Product product) {
+  Future<void> addProduct(Product product) {
     const url =
         'https://ecommerceappflutter-1feb8.firebaseio.com/products.json'; //firebase specific
-    http
+    return http
         .post(url,
             body: json.encode({
               'title': product.title,
@@ -63,7 +63,7 @@ class ProductProvider with ChangeNotifier {
               'price': product.price,
               'isFavourite': product.isFavourite,
             }))
-        .then((response) {
+        .then((response) { // then returns a future
           print(json.decode(response.body));
       final newProduct = Product(
         description: product.description,
@@ -75,6 +75,9 @@ class ProductProvider with ChangeNotifier {
       _items.add(newProduct);
       // _items.insert(0, newProduct); // to add items at the begenning of the list
       notifyListeners();
+    }).catchError((error){
+      print(error);
+      throw error;
     });
   }
 
