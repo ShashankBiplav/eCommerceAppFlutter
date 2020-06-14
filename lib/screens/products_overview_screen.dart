@@ -8,7 +8,6 @@ import '../providers/product_provider.dart';
 import './cart_screen.dart';
 import '../widgets/navigation_drawer.dart';
 
-
 enum FilterOptions {
   FAVOURITES,
   ALL,
@@ -21,10 +20,20 @@ class ProductsOverviewScreen extends StatefulWidget {
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _showonlyFavourites = false;
+  var _isLoading = false;
 
   @override
   void initState() {
-    Provider.of<ProductProvider>(context,listen: false).fetchAndSetProducts();
+    setState(() {
+      _isLoading = true;
+    });
+    Provider.of<ProductProvider>(context, listen: false)
+        .fetchAndSetProducts()
+        .then((_) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
     super.initState();
   }
 
@@ -62,16 +71,20 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               value: cart.itemCount.toString(),
             ),
             child: IconButton(
-                  icon: Icon(Icons.shopping_cart),
-                  onPressed: (){
-                    Navigator.of(context).pushNamed(CartScreen.routeName);
-                  },
-                ),
+              icon: Icon(Icons.shopping_cart),
+              onPressed: () {
+                Navigator.of(context).pushNamed(CartScreen.routeName);
+              },
+            ),
           ),
         ],
       ),
-      drawer:NavigationDrawer(),
-      body: ProductsGrid(showFavourites: _showonlyFavourites),
+      drawer: NavigationDrawer(),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ProductsGrid(showFavourites: _showonlyFavourites),
     );
   }
 }
