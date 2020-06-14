@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../widgets/products_grid.dart';
 import '../widgets/badge.dart';
 import '../providers/cart_provider.dart';
+import '../providers/product_provider.dart';
 import './cart_screen.dart';
 import '../widgets/navigation_drawer.dart';
 
@@ -20,6 +21,13 @@ class ProductsOverviewScreen extends StatefulWidget {
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _showonlyFavourites = false;
+
+  @override
+  void initState() {
+    Provider.of<ProductProvider>(context,listen: false).fetchAndSetProducts();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
