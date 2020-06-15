@@ -96,12 +96,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
       _isLoading = true;
     });
     if (_editedProduct.id != null) {
-      Provider.of<ProductProvider>(context, listen: false)
+      //TODO: add try catch for error handling
+      await Provider.of<ProductProvider>(context, listen: false)
           .updateProduct(_editedProduct.id, _editedProduct);
-      setState(() {
-        _isLoading = false;
-      });
-      Navigator.of(context).pop();
+      
     } else {
       try{
         await Provider.of<ProductProvider>(context, listen: false)
@@ -123,14 +121,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
           ),
         );
       }
-      finally{
-         setState(() {
-          _isLoading = false;
-        });
-        Navigator.of(context)
-            .pop(); // page won't pop unless we return future from product_provider
-      }
+      // finally{
+      //    setState(() {
+      //     _isLoading = false;
+      //   });
+      //   Navigator.of(context)
+      //       .pop(); // page won't pop unless we return future from product_provider
+      // }
     }
+    setState(() {
+        _isLoading = false;
+      });
+      Navigator.of(context).pop();
 
     // Navigator.of(context).pop();
     // print(_editedProduct.title);
