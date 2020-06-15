@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/product.dart';
+import '../models/http_exception.dart';
+
 
 class ProductProvider with ChangeNotifier {
   List<Product> _items = [
@@ -127,8 +129,8 @@ class ProductProvider with ChangeNotifier {
     if (productIndex >= 0) {
       final url =
           'https://ecommerceappflutter-1feb8.firebaseio.com/products/$id.json'; //firebase specific
-          //TODO: add try catch
-     await http.patch(url,
+      //TODO: add try catch
+      await http.patch(url,
           body: json.encode({
             'title': newProduct.title,
             'description': newProduct.description,
@@ -143,7 +145,19 @@ class ProductProvider with ChangeNotifier {
   }
 
   void deleteProduct(String id) {
-    _items.removeWhere((product) => product.id == id);
+    final url =
+        'https://ecommerceappflutter-1feb8.firebaseio.com/products/$id.json';
+        final existingproductIndex = _items.indexWhere((product) => product.id == id);
+        var existingProduct = _items[existingproductIndex];
+    http.delete(url).then((response) {
+      if (response.statusCode >=400) {
+        throw HttpException('Could not delete product.');
+      }
+         existingProduct = null;
+    }).catchError((_){
+      _items.insert(existingproductIndex, existingProduct);
+    });
+    _items.removeAt(existingproductIndex);
     notifyListeners();
   }
 }
