@@ -16,7 +16,7 @@ class OrderProvider with ChangeNotifier {
     const url =
         'https://ecommerceappflutter-1feb8.firebaseio.com/orders.json'; //firebase specific
     final response = await http.get(url);
-    print(json.decode(response.body));
+    // print(json.decode(response.body));
     final List<OrderItem> loadedOrders = [];
     final extractedData = json.decode(response.body) as Map<String, dynamic>;
     if (extractedData == null) {
