@@ -14,6 +14,7 @@ import './providers/cart_provider.dart';
 import './providers/order_provider.dart';
 import './providers/auth.dart';
 
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -24,14 +25,15 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (ctx) => Auth(),
         ),
-        ChangeNotifierProvider(
-          create: (ctx) => ProductProvider(),
+        ChangeNotifierProxyProvider<Auth, ProductProvider>(
+          // create: (ctx)=>ProductProvider(authToken, _items),
+          update: (ctx, auth, previousProducts) => ProductProvider( auth.token, previousProducts == null ? []: previousProducts.items),
         ),
         ChangeNotifierProvider(
           create: (ctx) => CartProvider(),
         ),
-        ChangeNotifierProvider(
-          create: (ctx) => OrderProvider(),
+        ChangeNotifierProxyProvider<Auth, OrderProvider>(
+          update: (ctx,auth, previousOrders) => OrderProvider(auth.token,previousOrders == null ? [] : previousOrders.items),
         ),
       ], // provider version >3 using create: instead of builder:
       child: Consumer<Auth>(

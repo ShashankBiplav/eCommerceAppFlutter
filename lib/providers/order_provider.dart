@@ -8,13 +8,17 @@ import '../models/cart_item.dart';
 class OrderProvider with ChangeNotifier {
   List<OrderItem> _orders = [];
 
+  final String authToken;
+
+  OrderProvider(this.authToken, this._orders);
+
   List<OrderItem> get items {
     return [..._orders];
   }
 
   Future<void> fetchAndSetOrders() async {
-    const url =
-        'https://ecommerceappflutter-1feb8.firebaseio.com/orders.json'; //firebase specific
+    final url =
+        'https://ecommerceappflutter-1feb8.firebaseio.com/orders.json?auth=$authToken'; //firebase specific
     final response = await http.get(url);
     // print(json.decode(response.body));
     final List<OrderItem> loadedOrders = [];
@@ -46,8 +50,8 @@ class OrderProvider with ChangeNotifier {
   }
 
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
-    const url =
-        'https://ecommerceappflutter-1feb8.firebaseio.com/orders.json'; //firebase specific
+    final url =
+        'https://ecommerceappflutter-1feb8.firebaseio.com/orders.json?auth=$authToken'; //firebase specific
     final timeStamp = DateTime.now();
     final response = await http.post(
       url,

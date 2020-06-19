@@ -43,6 +43,10 @@ class ProductProvider with ChangeNotifier {
     // ),
   ];
 
+  final String authToken;
+
+  ProductProvider(this.authToken, this._items);
+
   List<Product> get items {
     return [..._items];
   }
@@ -54,8 +58,8 @@ class ProductProvider with ChangeNotifier {
 
   //method to fetch products from the server
   Future<void> fetchAndSetProducts() async {
-    const url =
-        'https://ecommerceappflutter-1feb8.firebaseio.com/products.json'; //firebase specific
+    final url =
+        'https://ecommerceappflutter-1feb8.firebaseio.com/products.json?auth=$authToken'; //firebase specific
     try {
       final response = await http.get(url);
       // print(json.decode(response.body));
@@ -84,8 +88,8 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    const url =
-        'https://ecommerceappflutter-1feb8.firebaseio.com/products.json'; //firebase specific
+    final url =
+        'https://ecommerceappflutter-1feb8.firebaseio.com/products.json?auth=$authToken'; //firebase specific
     try {
       final response = await http.post(
         url,
@@ -130,7 +134,7 @@ class ProductProvider with ChangeNotifier {
     final productIndex = _items.indexWhere((product) => product.id == id);
     if (productIndex >= 0) {
       final url =
-          'https://ecommerceappflutter-1feb8.firebaseio.com/products/$id.json'; //firebase specific
+          'https://ecommerceappflutter-1feb8.firebaseio.com/products/$id.json?auth=$authToken'; //firebase specific
       //TODO: add try catch
       await http.patch(url,
           body: json.encode({
@@ -148,7 +152,7 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> deleteProduct(String id) async {
     final url =
-        'https://ecommerceappflutter-1feb8.firebaseio.com/products/$id.json';
+        'https://ecommerceappflutter-1feb8.firebaseio.com/products/$id.json?auth=$authToken';
     final existingproductIndex =
         _items.indexWhere((product) => product.id == id);
     var existingProduct = _items[existingproductIndex];

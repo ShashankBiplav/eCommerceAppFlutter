@@ -24,11 +24,11 @@ class Product with ChangeNotifier {
       notifyListeners();
   }
   // Apply optimistic updating for smooth UI performance
-  Future<void> toggleFavouriteStatus() async {
+  Future<void> toggleFavouriteStatus(String authToken) async {
     final oldStatus = isFavourite;
     isFavourite = !isFavourite;
     notifyListeners();
-    final url = 'https://ecommerceappflutter-1feb8.firebaseio.com/products/$id.json';
+    final url = 'https://ecommerceappflutter-1feb8.firebaseio.com/products/$id.json?auth=$authToken';
     try {
       final response = await http.patch(
         url,
