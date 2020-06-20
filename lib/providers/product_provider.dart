@@ -58,9 +58,10 @@ class ProductProvider with ChangeNotifier {
   }
 
   //method to fetch products from the server
-  Future<void> fetchAndSetProducts() async {
+  Future<void> fetchAndSetProducts([bool filterByUser= false]) async {
+    final filterString =filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
     var url =
-        'https://ecommerceappflutter-1feb8.firebaseio.com/products.json?auth=$authToken'; //firebase specific
+        'https://ecommerceappflutter-1feb8.firebaseio.com/products.json?auth=$authToken&$filterString'; //firebase specific
     try {
       final response = await http.get(url);
       // print(json.decode(response.body));
@@ -104,6 +105,7 @@ class ProductProvider with ChangeNotifier {
           'description': product.description,
           'imageUrl': product.imageUrl,
           'price': product.price,
+          'creatorId': userId,
           // 'isFavourite': product.isFavourite,
         }),
       );
