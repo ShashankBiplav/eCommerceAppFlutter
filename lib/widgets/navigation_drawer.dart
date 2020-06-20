@@ -33,6 +33,7 @@ class NavigationDrawer extends StatelessWidget {
           ListTile(leading: Icon(Icons.exit_to_app),title: Text('Logout'),onTap: (){
             // Navigator.of(context).pushReplacementNamed(UserProductsScreen.routeName);
             Navigator.of(context).pop();
+            Navigator.of(context).pushReplacementNamed('/');
             Provider.of<Auth>(context, listen: false).logout();
           },),
         ],
