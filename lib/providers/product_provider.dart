@@ -44,8 +44,9 @@ class ProductProvider with ChangeNotifier {
   ];
 
   final String authToken;
+  final String userId;
 
-  ProductProvider(this.authToken, this._items);
+  ProductProvider(this.authToken, this.userId, this._items);
 
   List<Product> get items {
     return [..._items];
@@ -58,7 +59,7 @@ class ProductProvider with ChangeNotifier {
 
   //method to fetch products from the server
   Future<void> fetchAndSetProducts() async {
-    final url =
+    var url =
         'https://ecommerceappflutter-1feb8.firebaseio.com/products.json?auth=$authToken'; //firebase specific
     try {
       final response = await http.get(url);
@@ -67,6 +68,10 @@ class ProductProvider with ChangeNotifier {
       if (extractedData == null) {
         return;
       }
+      url =
+          'https://ecommerceappflutter-1feb8.firebaseio.com/userFavourites/$userId.json/?auth=$authToken';
+      final favouriteResponse = await http.get(url);
+      final favouriteData = json.decode(favouriteResponse.body);
       final List<Product> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
@@ -76,7 +81,8 @@ class ProductProvider with ChangeNotifier {
             description: prodData['description'],
             imageUrl: prodData['imageUrl'],
             price: prodData['price'],
-            isFavourite: prodData['isFavourite'],
+            isFavourite:
+                favouriteData == null ? false : favouriteData[prodId] ?? false,
           ),
         );
       });
@@ -98,7 +104,7 @@ class ProductProvider with ChangeNotifier {
           'description': product.description,
           'imageUrl': product.imageUrl,
           'price': product.price,
-          'isFavourite': product.isFavourite,
+          // 'isFavourite': product.isFavourite,
         }),
       );
       print(json.decode(response.body));
