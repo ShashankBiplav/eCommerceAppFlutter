@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import './screens/products_overview_screen.dart';
@@ -23,6 +24,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -45,6 +47,7 @@ class MyApp extends StatelessWidget {
       ], // provider version >3 using create: instead of builder:
       child: Consumer<Auth>(
         builder: (ctx, authData, _) => MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'eCommerce',
           theme: ThemeData(
             primarySwatch: Colors.purple,

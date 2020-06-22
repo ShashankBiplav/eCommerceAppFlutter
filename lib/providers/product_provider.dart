@@ -116,7 +116,7 @@ class ProductProvider with ChangeNotifier {
         imageUrl: product.imageUrl,
         price: product.price,
         id: json.decode(response.body)[
-            'name'], // assingning the id that is given to the obejct by firebase
+            'name'], // assigning the id that is given to the obejct by firebase
       );
       _items.add(newProduct);
       // _items.insert(0, newProduct); // to add items at the begenning of the list
