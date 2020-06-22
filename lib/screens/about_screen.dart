@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatelessWidget {
   static const routeName = '/about-screen';
+
+  _launchUrl() async {
+    const url = "https://github.com/ShashankBiplav/eCommerceAppFlutter";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,9 +21,9 @@ class AboutScreen extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height:10),
+              SizedBox(height: 10),
               CircleAvatar(
                 radius: 50.0,
                 backgroundImage: NetworkImage(
@@ -75,7 +86,7 @@ class AboutScreen extends StatelessWidget {
               Container(
                 padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
                 child: Text(
-                  'This is an eCommerce app built on Flutter and the backend is on Firebase. It features full backend and frontend integrations. Here you can place orders, CRUD products and everything works on per user basis. This project repository is also available on my Github Profile:',
+                  'This is an eCommerce app built on Flutter and the backend is on Firebase. It features full backend and frontend integrations. The app works on API endpoints. Here you can place orders, CRUD products and everything works on per user basis. This project repository is also available on my Github Profile:',
                   style: TextStyle(
                     fontFamily: 'Pacifico',
                     fontSize: 15.0,
@@ -86,20 +97,24 @@ class AboutScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-               Card(
-                color: Colors.white,
-                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                child: ListTile(
-                  leading: Icon(
-                    Icons.note_add,
-                    color: Colors.teal,
+              Container(
+                margin: EdgeInsets.all(20),
+                padding: EdgeInsets.all(10),
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                  title: Text(
-                    'https://github.com/ShashankBiplav/eCommerceAppFlutter',
-                    style: TextStyle(
-                      fontSize: 10.0,
-                      fontFamily: 'Anton',
-                      color: Colors.teal.shade900,
+                  elevation: 10,
+                  onPressed: _launchUrl,
+                  child: Container(
+                    margin: EdgeInsets.all(13),
+                    child: Text(
+                      'Go to Repository',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontFamily: 'Anton',
+                        color: Colors.teal.shade900,
+                      ),
                     ),
                   ),
                 ),
