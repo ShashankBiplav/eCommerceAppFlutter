@@ -74,6 +74,9 @@ flutter:
     - family: Anton
       fonts:
         - asset: assets/fonts/Anton-Regular.ttf
+    - family: Pacifico
+      fonts:
+        - asset: assets/fonts/Pacifico-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

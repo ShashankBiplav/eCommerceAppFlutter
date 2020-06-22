@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../screens/orders_screen.dart';
-import '../screens/user_products_screen.dart';
 import '../providers/auth.dart';
 
+import '../screens/orders_screen.dart';
+import '../screens/user_products_screen.dart';
+import '../screens/about_screen.dart';
 
 
 class NavigationDrawer extends StatelessWidget {
@@ -35,6 +36,11 @@ class NavigationDrawer extends StatelessWidget {
             Navigator.of(context).pop();
             Navigator.of(context).pushReplacementNamed('/');
             Provider.of<Auth>(context, listen: false).logout();
+          },),
+          SizedBox(height: 40,),
+          Divider(),
+          ListTile(leading: Icon(Icons.info_outline),title: Text('About App'),onTap: (){
+            Navigator.of(context).pushNamed(AboutScreen.routeName);
           },),
         ],
       ),
